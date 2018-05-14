@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+         bean配置（属性注入，先调用默认构造函数，再设值，所以要求bean中必须有无参构造函数）
+         class： bean的全类名，通过反射在IOC容器中创建
+         id： bean的唯一标识
+         property： 传入属性值
+     -->
+    <bean id="peopleBySetter" class="com.gyg.chapter01.entity.People">
+        <property name="name" value="福尔摩斯"/>
+        <property name="age" value="1000"/>
+    </bean>
+
+    <!--
+         bean配置（构造注入）
+         class： bean的全类名，通过反射在IOC容器中创建
+         id： bean的唯一标识
+         constructor-arg： 传入构造函数的参数值（将不再调用默认构造函数）
+     -->
+    <bean id="peopleByConstructor" class="com.gyg.chapter01.entity.People">
+        <constructor-arg name="name" value="华生"/>
+        <constructor-arg name="age" value="999"/>
+        <constructor-arg name="hat">
+            <null/>
+        </constructor-arg>
+        <constructor-arg name="clothesList">
+            <null/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="highHat" class="com.gyg.chapter01.entity.Hat">
+        <property name="color" value="black"/>
+    </bean>
+
+    <bean id="peopleWithHat" class="com.gyg.chapter01.entity.People">
+        <property name="name" value="福尔摩斯"/>
+        <property name="age">
+            <value><![CDATA[+∞]]></value>
+        </property>
+        <property name="hat" ref="highHat"/>
+    </bean>
+    
+    <bean id="clothes01" class="com.gyg.chapter01.entity.Clothes">
+        <property name="category" value="suits"/>
+    </bean>
+    <bean id="clothes02" class="com.gyg.chapter01.entity.Clothes">
+        <property name="category" value="white gown"/>
+    </bean>
+
+    <bean id="peopleWithClothes" class="com.gyg.chapter01.entity.People">
+        <property name="name" value="华生"/>
+        <property name="age">
+            <value><![CDATA[+∞]]></value>
+        </property>
+        <property name="clothesList">
+            <list>
+                <ref bean="clothes01"/>
+                <ref bean="clothes02"/>
+            </list>
+        </property>
+    </bean>
+</beans>

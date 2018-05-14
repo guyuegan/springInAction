@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan
+            base-package="com.gyg.chapter04"/>
+
+    <aop:config>
+
+        <!--引用audience_02中的通知方法-->
+        <aop:aspect ref="audience_02" order="2">
+            <!--定义切点-->
+            <aop:pointcut id="perform"
+                expression="execution(** com.gyg.chapter04.service.Performance.perform(..))"/>
+
+            <aop:before pointcut-ref="perform" method="takeSeats"/>
+
+            <aop:after-returning pointcut-ref="perform" method="applause"/>
+
+            <aop:after-throwing pointcut-ref="perform" method="demandRefund"/>
+        </aop:aspect>
+
+        <aop:aspect ref="audience" order="1">
+            <!--定义切点-->
+            <aop:pointcut id="perform"
+                          expression="execution(** com.gyg.chapter04.service.Performance.perform(..))"/>
+
+            <aop:around pointcut-ref="perform" method="watchPerform"/>
+
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>

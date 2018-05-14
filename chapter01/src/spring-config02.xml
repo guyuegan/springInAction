@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+         bean配置（属性注入，先调用默认构造函数，再设值，所以要求bean中必须有无参构造函数）
+         class： bean的全类名，通过反射在IOC容器中创建
+         id： bean的唯一标识
+         p： 传入属性值
+     -->
+    <bean id="peopleBySetter"
+          class="com.gyg.chapter01.entity.People"
+          p:name="福尔摩斯"
+          p:age="1000"/>
+
+    <!--
+         bean配置（构造注入）
+         class： bean的全类名，通过反射在IOC容器中创建
+         id： bean的唯一标识
+         c： 传入构造函数的参数值（将不再调用默认构造函数）
+     -->
+    <bean id="peopleByConstructor"
+          class="com.gyg.chapter01.entity.People"
+          c:name="华生"
+          c:age="999">
+            <constructor-arg name="hat">
+                <null/>
+            </constructor-arg>
+            <constructor-arg name="clothesList">
+                <null/>
+            </constructor-arg>
+    </bean>
+
+    <bean id="highHat"
+          class="com.gyg.chapter01.entity.Hat"
+          p:color="black"/>
+
+    <bean id="peopleWithHat"
+          class="com.gyg.chapter01.entity.People"
+          p:name="福尔摩斯"
+          p:hat-ref="highHat">
+            <property name="age">
+                <value><![CDATA[+∞]]></value>
+            </property>
+    </bean>
+
+    <util:list id="clothesList">
+        <bean id="clothes01"
+              class="com.gyg.chapter01.entity.Clothes"
+              p:category="suits"/>
+        <bean id="clothes02"
+              class="com.gyg.chapter01.entity.Clothes"
+              p:category="white gown"/>
+    </util:list>
+
+
+    <bean id="peopleWithClothes"
+          class="com.gyg.chapter01.entity.People"
+          p:name="华生"
+          p:clothesList-ref="clothesList">
+        <property name="age">
+            <value><![CDATA[+∞]]></value>
+        </property>
+    </bean>
+
+</beans>
